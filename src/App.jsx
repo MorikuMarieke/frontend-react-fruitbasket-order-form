@@ -1,5 +1,8 @@
 import './App.css'
 import {useState} from 'react'
+import FruitAmountEntry from "./components/fruitAmountEntry/FruitAmountEntry.jsx";
+import Button from "./components/button/Button.jsx";
+import InputLabel from "./components/inputLabel/InputLabel.jsx";
 
 function App() {
     let [fruitCounter, setFruitCounter] = useState({
@@ -9,174 +12,382 @@ function App() {
         kiwis: 0,
     });
 
+    const [formData, setFormdata] = useState({
+        firstName: '',
+        lastName: '',
+        age: '',
+        zipCode: '',
+        deliveryFrequency: 'weekly',
+        deliveryTime: 'daytime-delivery',
+        acceptTerms: false,
+    });
+
     const handleSubmit = (event) => {
         event.preventDefault(); // Prevent default form submission behavior
         const formData = new FormData(event.target); // Collect form data
         console.log(Object.fromEntries(formData.entries())); // Log as an object
     };
 
+    const handleInputChange = (e) => {
+        const {name, value, type, checked} = e.target;
+        setFormdata((prev) => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
+    };
+
+    const handleFruitUpdate = (product, newCount) => {
+        setFruitCounter((prev) => ({
+            ...prev,
+            [product]: newCount,
+        }));
+    };
+
     return (
         <>
             <h1>Fruitmand bezorgservice</h1>
-            <article className="fruitCard">
-                <h2>🍓Aardbeien</h2>
-                <button
-                    type="button"
-                    onClick={() =>
-                        setFruitCounter({
-                            ...fruitCounter,
-                            strawberries: fruitCounter.strawberries - 1
-                        })
-                    }
-                    disabled={fruitCounter.strawberries <= 0}
-                    className="minus-button"
-                >
-                    -
-                </button>
-                <h3>{fruitCounter.strawberries}</h3>
-                <button
-                    type="button"
-                    onClick={() =>
-                        setFruitCounter({
-                            ...fruitCounter,
-                            strawberries: fruitCounter.strawberries + 1
-                        })
-                    }
-                    className="plus-button"
-                >
-                    +
-                </button>
-            </article>
+            <div className="fruit-amount-entry">
 
-            <article className="fruitCard">
-                <h2>🍌Bananen</h2>
-                <button
-                    type="button"
-                    onClick={() =>
-                        setFruitCounter({
-                            ...fruitCounter,
-                            bananas: fruitCounter.bananas - 1
-                        })
-                    }
-                    disabled={fruitCounter.bananas <= 0}
-                    className="minus-button"
-                >
-                    -
-                </button>
-                <h3>{fruitCounter.bananas}</h3>
-                <button
-                    type="button"
-                    onClick={() =>
-                        setFruitCounter({
-                            ...fruitCounter,
-                            bananas: fruitCounter.bananas + 1
-                        })
-                    }
-                    className="plus-button"
-                >
-                    +
-                </button>
-            </article>
+                <FruitAmountEntry
+                    productName="🍓Aardbeien"
+                    product="strawberries"
+                    count={fruitCounter.strawberries}
+                    onUpdate={handleFruitUpdate}
+                />
 
-            <article className="fruitCard">
-                <h2>🍏Appels</h2>
-                <button
-                    type="button"
-                    onClick={() =>
-                        setFruitCounter({
-                            ...fruitCounter,
-                            apples: fruitCounter.apples - 1
-                        })
-                    }
-                    disabled={fruitCounter.apples <= 0}
-                    className="minus-button"
-                >
-                    -
-                </button>
-                <h3>{fruitCounter.apples}</h3>
-                <button
-                    type="button"
-                    onClick={() =>
-                        setFruitCounter({
-                            ...fruitCounter,
-                            apples: fruitCounter.apples + 1
-                        })
-                    }
-                    className="plus-button"
-                >
-                    +
-                </button>
-            </article>
+                <FruitAmountEntry
+                    productName="🍌Bananen"
+                    product="bananas"
+                    count={fruitCounter.bananas}
+                    onUpdate={handleFruitUpdate}
+                />
 
-            <article className="fruitCard">
-                <h2>🥝Kiwi&apos;s</h2>
-                <button
-                    type="button"
-                    onClick={() =>
-                        setFruitCounter({
-                            ...fruitCounter,
-                            kiwis: fruitCounter.kiwis - 1
-                        })
-                    }
-                    disabled={fruitCounter.kiwis <= 0}
-                    className="minus-button"
-                >
-                    -
-                </button>
-                <h3>{fruitCounter.kiwis}</h3>
-                <button
-                    type="button"
-                    onClick={() =>
-                        setFruitCounter({
-                            ...fruitCounter,
-                            kiwis: fruitCounter.kiwis + 1
-                        })
-                    }
-                    className="plus-button"
-                >
-                    +
-                </button>
-            </article>
+                <FruitAmountEntry
+                    productName="🍏Appels"
+                    product="apples"
+                    count={fruitCounter.apples}
+                    onUpdate={handleFruitUpdate}
+                />
 
-            <button
-                type="button"
-                className="reset-button"
-                onClick={() => {
-                    setFruitCounter({
-                        ...fruitCounter,
-                        strawberries: 0,
-                        bananas: 0,
-                        apples: 0,
-                        kiwis: 0
-                    })
-                }}
-
-            >
-                reset
-            </button>
+                <FruitAmountEntry
+                    productName="🥝Kiwi&apos;s"
+                    product="kiwis"
+                    count={fruitCounter.kiwis}
+                    onUpdate={handleFruitUpdate}
+                />
+                {/*<article className="fruitCard">*/}
+                {/*    <h2>🍓Aardbeien</h2>*/}
+                {/*    <button*/}
+                {/*        type="button"*/}
+                {/*        onClick={() =>*/}
+                {/*            setFruitCounter({*/}
+                {/*                ...fruitCounter,*/}
+                {/*                strawberries: fruitCounter.strawberries - 1*/}
+                {/*            })*/}
+                {/*        }*/}
+                {/*        disabled={fruitCounter.strawberries <= 0}*/}
+                {/*        className="minus-button"*/}
+                {/*    >*/}
+                {/*        -*/}
+                {/*    </button>*/}
+                {/*    <h3>{fruitCounter.strawberries}</h3>*/}
+                {/*    <button*/}
+                {/*        type="button"*/}
+                {/*        onClick={() =>*/}
+                {/*            setFruitCounter({*/}
+                {/*                ...fruitCounter,*/}
+                {/*                strawberries: fruitCounter.strawberries + 1*/}
+                {/*            })*/}
+                {/*        }*/}
+                {/*        className="plus-button"*/}
+                {/*    >*/}
+                {/*        +*/}
+                {/*    </button>*/}
+                {/*</article>*/}
+                {/*<article className="fruitCard">*/}
+                {/*    <h2>🍌Bananen</h2>*/}
+                {/*    <button*/}
+                {/*        type="button"*/}
+                {/*        onClick={() =>*/}
+                {/*            setFruitCounter({*/}
+                {/*                ...fruitCounter,*/}
+                {/*                bananas: fruitCounter.bananas - 1*/}
+                {/*            })*/}
+                {/*        }*/}
+                {/*        disabled={fruitCounter.bananas <= 0}*/}
+                {/*        className="minus-button"*/}
+                {/*    >*/}
+                {/*        -*/}
+                {/*    </button>*/}
+                {/*    <h3>{fruitCounter.bananas}</h3>*/}
+                {/*    <button*/}
+                {/*        type="button"*/}
+                {/*        onClick={() =>*/}
+                {/*            setFruitCounter({*/}
+                {/*                ...fruitCounter,*/}
+                {/*                bananas: fruitCounter.bananas + 1*/}
+                {/*            })*/}
+                {/*        }*/}
+                {/*        className="plus-button"*/}
+                {/*    >*/}
+                {/*        +*/}
+                {/*    </button>*/}
+                {/*</article>*/}
+                {/*<article className="fruitCard">*/}
+                {/*    <h2>🍏Appels</h2>*/}
+                {/*    <button*/}
+                {/*        type="button"*/}
+                {/*        onClick={() =>*/}
+                {/*            setFruitCounter({*/}
+                {/*                ...fruitCounter,*/}
+                {/*                apples: fruitCounter.apples - 1*/}
+                {/*            })*/}
+                {/*        }*/}
+                {/*        disabled={fruitCounter.apples <= 0}*/}
+                {/*        className="minus-button"*/}
+                {/*    >*/}
+                {/*        -*/}
+                {/*    </button>*/}
+                {/*    <h3>{fruitCounter.apples}</h3>*/}
+                {/*    <button*/}
+                {/*        type="button"*/}
+                {/*        onClick={() =>*/}
+                {/*            setFruitCounter({*/}
+                {/*                ...fruitCounter,*/}
+                {/*                apples: fruitCounter.apples + 1*/}
+                {/*            })*/}
+                {/*        }*/}
+                {/*        className="plus-button"*/}
+                {/*    >*/}
+                {/*        +*/}
+                {/*    </button>*/}
+                {/*</article>*/}
+                {/*<article className="fruitCard">*/}
+                {/*    <h2>🥝Kiwi&apos;s</h2>*/}
+                {/*    <button*/}
+                {/*        type="button"*/}
+                {/*        onClick={() =>*/}
+                {/*            setFruitCounter({*/}
+                {/*                ...fruitCounter,*/}
+                {/*                kiwis: fruitCounter.kiwis - 1*/}
+                {/*            })*/}
+                {/*        }*/}
+                {/*        disabled={fruitCounter.kiwis <= 0}*/}
+                {/*        className="minus-button"*/}
+                {/*    >*/}
+                {/*        -*/}
+                {/*    </button>*/}
+                {/*    <h3>{fruitCounter.kiwis}</h3>*/}
+                {/*    <button*/}
+                {/*        type="button"*/}
+                {/*        onClick={() =>*/}
+                {/*            setFruitCounter({*/}
+                {/*                ...fruitCounter,*/}
+                {/*                kiwis: fruitCounter.kiwis + 1*/}
+                {/*            })*/}
+                {/*        }*/}
+                {/*        className="plus-button"*/}
+                {/*    >*/}
+                {/*        +*/}
+                {/*    </button>*/}
+                {/*</article>*/}
+                <Button
+                    type="button"
+                    className="resetButton"
+                    onClick={() => {
+                        setFruitCounter({
+                            strawberries: 0,
+                            bananas: 0,
+                            apples: 0,
+                            kiwis: 0,
+                        })
+                    }}
+                    buttonText="Reset"
+                />
+            </div>
 
             <form className="delivery-form" onSubmit={handleSubmit}>
-                <label htmlFor="first-name">Voornaam <input type="text" id="first-name" name="first-name"/></label>
-                <label htmlFor="last-name">Achternaam <input type="text" id="last-name" name="last-name"/></label>
-                <label htmlFor="last-name">Leeftijd <input type="number" id="last-name" name="last-name"
-                                                           placeholder="0"/></label>
-                <label htmlFor="zip-code">Postcode <input type="text" id="zip-code" name="zip-code"/></label>
-                <label htmlFor="delivery-frequency">Bezorgfrequentie</label>
-                <select id="delivery-options-day" value="delivery-options-day" name="delivery-options-day">
+                <InputLabel
+                    labelName="firstName"
+                    inputText="Voornaam"
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    className="inputField"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    required={true}
+                />
+                <InputLabel
+                    labelName="lastName"
+                    inputText="Achternaam"
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    className="inputField"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    required={true}
+                />
+                <InputLabel
+                    labelName="age"
+                    inputText="Leeftijd"
+                    type="number"
+                    id="age"
+                    name="age"
+                    className="inputField"
+                    value={formData.age}
+                    onChange={handleInputChange}
+                    required={false}
+                />
+                <InputLabel
+                    labelName="zipCode"
+                    inputText="Postcode"
+                    type="text"
+                    id="zipCode"
+                    name="zipCode"
+                    className="inputField"
+                    value={formData.zipCode}
+                    onChange={handleInputChange}
+                    required={true}
+                />
+
+                {/*<label htmlFor="first-name">*/}
+                {/*    Voornaam*/}
+                {/*    <input*/}
+                {/*        type="text"*/}
+                {/*        id="first-name"*/}
+                {/*        name="firstName"*/}
+                {/*        value={formData.firstName}*/}
+                {/*        onChange={handleInputChange}*/}
+                {/*        required*/}
+                {/*    />*/}
+                {/*</label>*/}
+
+                {/*<label htmlFor="lastName">*/}
+                {/*    Achternaam*/}
+                {/*    <input*/}
+                {/*        type="text"*/}
+                {/*        id="lastName"*/}
+                {/*        name="lastName"*/}
+                {/*        value={formData.lastName}*/}
+                {/*        onChange={handleInputChange}*/}
+                {/*        required*/}
+                {/*    />*/}
+                {/*</label>*/}
+
+                {/*<label htmlFor="age">*/}
+                {/*    Leeftijd*/}
+                {/*    <input*/}
+                {/*        type="number"*/}
+                {/*        id="age"*/}
+                {/*        name="age"*/}
+                {/*        value={formData.age}*/}
+                {/*        onChange={handleInputChange}*/}
+                {/*        placeholder="0"*/}
+                {/*    />*/}
+                {/*</label>*/}
+
+                {/*<label htmlFor="zipCode">*/}
+                {/*    Postcode*/}
+                {/*    <input*/}
+                {/*        type="text"*/}
+                {/*        id="zipCode"*/}
+                {/*        name="zipCode"*/}
+                {/*        value={formData.zipCode}*/}
+                {/*        onChange={handleInputChange}*/}
+                {/*        required*/}
+                {/*    />*/}
+                {/*</label>*/}
+
+                <label htmlFor="deliveryFrequency">
+                    Bezorgfrequentie
+                </label>
+                <select
+                    id="deliveryFrequency"
+                    name="deliveryFrequency"
+                    required
+                >
                     <option value="weekly">Iedere week</option>
                     <option value="every-2-weeks">Om de week</option>
                     <option value="monthly">Om de maand</option>
                 </select>
+
                 <div>
-                    <input type="radio" id="daytime-delivery" value="daytime-delivery" name="delivery-frequency" checked />
-                    <label htmlFor="daytime-delivery">Overdag</label>
-                    <input type="radio" id="evening-delivery" value="evening-delivery" name="delivery-frequency"/>
-                    <label htmlFor="evening-delivery">&apos;s Avonds</label>
+                    <InputLabel
+                        labelName="daytimeDelivery"
+                        type="radio"
+                        id="daytimeDelivery"
+                        value="daytimeDelivery"
+                        name="deliveryTime"
+                        checked={formData.deliveryTime === "daytimeDelivery"}
+                        onChange={handleInputChange}
+                        required={true}
+                    >
+                        Overdag
+                    </InputLabel>
+                    <InputLabel
+                        labelName="eveningDelivery"
+                        type="radio"
+                        id="eveningDelivery"
+                        value="eveningDelivery"
+                        name="deliveryTime"
+                        checked={formData.deliveryTime === "daytimeDelivery"}
+                        onChange={handleInputChange}
+                        required={true}
+                    >
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
+                        's Avonds
+                    </InputLabel>
+
+                    {/*<label htmlFor="daytimeDelivery">*/}
+                    {/*    <input*/}
+                    {/*        type="radio"*/}
+                    {/*        id="daytimeDelivery"*/}
+                    {/*        value="daytimeDelivery"*/}
+                    {/*        name="deliveryTime"*/}
+                    {/*        checked={formData.deliveryTime === "daytimeDelivery"}*/}
+                    {/*        onChange={handleInputChange}*/}
+                    {/*        required*/}
+                    {/*    />*/}
+                    {/*    Overdag*/}
+                    {/*</label>*/}
+                    {/*<label htmlFor="eveningDelivery">*/}
+                    {/*    <input*/}
+                    {/*        type="radio"*/}
+                    {/*        id="eveningDelivery"*/}
+                    {/*        value="eveningDelivery"*/}
+                    {/*        name="deliveryTime"*/}
+                    {/*        checked={formData.deliveryTime === "eveningDelivery"}*/}
+                    {/*        onChange={handleInputChange}*/}
+                    {/*        required*/}
+                    {/*    />*/}
+                    {/*    &apos;s Avonds*/}
+                    {/*</label>*/}
                 </div>
-                <label htmlFor="delivery-note">Opmerking</label>
-                <textarea id="delivery-note" name="delivery-note"></textarea>
-                <label htmlFor="accept-terms-conditions"><input type="checkbox" id="accept-terms-conditions" name="accept-terms-conditions" /> Ik ga akkoord met de voorwaarden</label>
-                <input type="submit" value="Verzend"/>
+
+                <label htmlFor="deliveryNote">
+                    Opmerking
+                    <textarea
+                        id="deliveryNote"
+                        name="deliveryNote"
+                    ></textarea>
+                </label>
+                <label htmlFor="acceptTerms">
+                    <input
+                        type="checkbox"
+                        id="acceptTerms"
+                        name="acceptTerms"
+                        checked={formData.acceptTerms}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    Ik ga akkoord met de voorwaarden
+                </label>
+                <Button
+                    type="submit"
+                    buttonText="Verzend"
+                />
             </form>
         </>
     )
