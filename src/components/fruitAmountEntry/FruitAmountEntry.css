@@ -1,0 +1,13 @@
+
+.fruitCard {
+    border: #FAFAFF solid 2px;
+    border-radius: 10px;
+    background-color: #E4D9FF;
+    text-align: center;
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 400px;
+    padding-right: 50px;
+}
