@@ -12,7 +12,7 @@ function App() {
         kiwis: 0,
     });
 
-    const [formData, setFormdata] = useState({
+    const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         age: '',
@@ -30,7 +30,7 @@ function App() {
 
     const handleInputChange = (e) => {
         const {name, value, type, checked} = e.target;
-        setFormdata((prev) => ({
+        setFormData((prev) => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value,
         }));
@@ -380,13 +380,14 @@ function App() {
                         name="acceptTerms"
                         checked={formData.acceptTerms}
                         onChange={handleInputChange}
-                        required
+                        required={true}
                     />
                     Ik ga akkoord met de voorwaarden
                 </label>
                 <Button
                     type="submit"
                     buttonText="Verzend"
+                    onClick={() => console.log(fruitCounter)}
                 />
             </form>
         </>
